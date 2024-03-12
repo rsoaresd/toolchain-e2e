@@ -1,4 +1,4 @@
-package e2e
+package parallel
 
 import (
 	"context"
@@ -18,6 +18,8 @@ import (
 )
 
 func TestToolchainClusterE2E(t *testing.T) {
+	t.Parallel()
+
 	awaitilities := WaitForDeployments(t)
 	hostAwait := awaitilities.Host()
 	memberAwait := awaitilities.Member1()
