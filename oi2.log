@@ -1,0 +1,4 @@
+go version go1.21.9 darwin/arm64
+mkdir -p ./build/_output/bin || true
+CGO_ENABLED=0 GOARCH=arm64  GOOS=linux \
+		go build  ./...

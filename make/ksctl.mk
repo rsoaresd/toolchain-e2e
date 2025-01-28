@@ -39,6 +39,13 @@ else
 endif
 	@$(MAKE) install-ksctl KSCTL_REPO_PATH=${KSCTL_REPO_PATH} REMOTE_KSCTL_BRANCH=${REMOTE_KSCTL_BRANCH}
 
+
+# generate ksctl.yaml file (needed to run user-management related ksctl commands)
+generate-ksctl-file:
+	scripts/ksctl/generate-ksctl-file.sh HOST_NS=toolchain-host-27164756 MEMBER_NS=toolchain-member-27164756 OUT_DIR_PATH=/Users/rsoaresd/toolchain-e2e/scripts/ksctl
+
+
+
 clone-ksctl-and-pair:
 ifneq ($(strip $(REMOTE_KSCTL_BRANCH)),)
 	@echo "Branch ref of the user's fork to be used for pairing: \"${REMOTE_KSCTL_BRANCH}\""
@@ -47,8 +54,8 @@ ifneq ($(strip $(REMOTE_KSCTL_BRANCH)),)
 	# delete to have clear environment
 	rm -rf ${KSCTL_REPO_PATH}
 
-	git config --global user.email "devtools@redhat.com"
-	git config --global user.name "Devtools"
+	git config --global user.email "devsandbox@redhat.com"
+	git config --global user.name "KubeSaw"
 	# clone
 	git clone --depth=1 https://github.com/kubesaw/ksctl.git ${KSCTL_REPO_PATH}
 	# add the user's fork as remote repo
