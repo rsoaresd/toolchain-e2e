@@ -12,7 +12,7 @@ get_repo() {
     if [[ -z ${PROVIDED_REPOSITORY_PATH} ]]; then
         REPOSITORY_PATH="/tmp/codeready-toolchain/${REPOSITORY_NAME}"
         
-        ${PAIRING_EXEC} -clone-dir ${REPOSITORY_PATH} -organization codeready-toolchain -repository ${REPOSITORY_NAME}
+        ${PAIRING_EXEC} pair -clone-dir ${REPOSITORY_PATH} -organization codeready-toolchain -repository ${REPOSITORY_NAME}
     else
         REPOSITORY_PATH=${PROVIDED_REPOSITORY_PATH}
     fi
