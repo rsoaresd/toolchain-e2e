@@ -50,7 +50,7 @@ build-pairing:
 	# Clone 
 	git clone --branch add_pairing_go_script https://github.com/rsoaresd/toolchain-cicd.git ${TOOLCHAIN_CICD}
 	# Build the Go binary into the specified directory
-	make -C ${TOOLCHAIN_CICD}/scripts/ci/pairing build-pairing PAIRING_DIR=${PAIRING_DIR}
+	make -C ${TOOLCHAIN_CICD}/pairing build-pairing PAIRING_DIR=${PAIRING_DIR}
 
 
 .PHONY: test-e2e
