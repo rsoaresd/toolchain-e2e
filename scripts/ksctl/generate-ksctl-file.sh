@@ -98,7 +98,7 @@ echo "All kustomizations applied successfully!"
 KSCTL_CONFIG_PATH=$HOME/out/config
 
 # generate ksctl.yaml file
-ksctl generate cli-configs -k "$KUBECONFIG_PATH" -c "$KUBESAW_ADMINS_PATH" -o $KSCTL_CONFIG_PATH
+ksctl generate cli-configs -k "$KUBECONFIG" -c "$KUBESAW_ADMINS_PATH" -o $KSCTL_CONFIG_PATH
 
 
 # copy first-admin/ksctl.yaml to $HOME/.ksctl.yaml (default expected by ksctl)
