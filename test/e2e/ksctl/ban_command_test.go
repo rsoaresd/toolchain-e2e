@@ -2,6 +2,7 @@ package ksctl
 
 import (
 	"bytes"
+	"errors"
 	"os/exec"
 	"strings"
 	"testing"
@@ -43,10 +44,12 @@ func TestBanCommand(t *testing.T) {
 
 	stdOutput, err := cmd.CombinedOutput()
 	cmdOutput := string(stdOutput)
-	if _, ok := err.(*exec.ExitError); ok {
-		t.Logf("command output: %s", strings.Split(cmdOutput, "\n"))
+	if err != nil {
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) {
+			t.Logf("command output: %s", strings.Split(cmdOutput, "\n"))
+		}
 	}
-
 	require.NoError(t, err)
 	assert.Contains(t, cmdOutput, "!!!  DANGER ZONE  !!!")
 	assert.Contains(t, cmdOutput, "Are you sure that you want to ban the user with the UserSignup by creating BannedUser resource that are both above?")
