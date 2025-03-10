@@ -1,0 +1,166 @@
+clusters:
+  host:
+    api: ${API}
+  members:
+  - api: ${API}
+    name: member-1
+  - api: ${API}
+    name: member-2
+    separateKustomizeComponent: true
+
+defaultServiceAccountsNamespace:
+  host: host-sre-namespace
+  member: member-sre-namespace
+
+serviceAccounts:
+
+- name: first-admin
+  host:
+    roleBindings:
+    - namespace: ${HOST_NS}
+      roles:
+      - restart-deployment
+      - approve-user
+      - view-secrets
+      - deactivate-user
+      - ban-user
+      - promote-user
+      - disable-user
+      - retarget-user
+      - gdpr-delete
+      - create-social-event
+      - add-space-users
+      clusterRoles:
+      - view
+  member:
+    roleBindings:
+    - namespace: ${MEMBER_NS}
+      roles:
+      - restart-deployment
+      - view-secrets
+      clusterRoles:
+      - view
+
+- name: second-admin
+  host:
+    roleBindings:
+    - namespace: ${HOST_NS}
+      roles:
+      - approve-user
+      - view-secrets
+      - deactivate-user
+      - ban-user
+      - promote-user
+      - disable-user
+      - retarget-user
+      - gdpr-delete
+      - restart-deployment
+      - create-social-event
+      - add-space-users
+      clusterRoles:
+      - view
+  member:
+    roleBindings:
+    - namespace: ${MEMBER_NS}
+      roles:
+      - restart-deployment
+      - view-secrets
+      clusterRoles:
+      - view
+
+- name: viewer
+  host:
+    roleBindings:
+    - namespace: ${HOST_NS}
+      clusterRoles:
+      - view
+  member:
+    roleBindings:
+    - namespace: ${MEMBER_NS}
+      clusterRoles:
+      - view
+
+users:
+- name: standard-user-admin
+  id:
+  - 123456
+  - abc1234
+  groups:
+  - crtadmin-users-view
+  - inspect-pods
+  host:
+    roleBindings:
+    - namespace: ${HOST_NS}
+      roles:
+      - edit-secrets
+      clusterRoles:
+      - view
+    - namespace: openshift-customer-monitoring
+      clusterRoles:
+      - view
+    - namespace: openshift-logging
+      clusterRoles:
+      - view
+  member:
+    roleBindings:
+    - namespace: ${MEMBER_NS}
+      roles:
+      - edit-secrets
+      clusterRoles:
+      - view
+    - namespace: crw
+      roles:
+      - view-secrets
+      clusterRoles:
+      - view
+    - namespace: openshift-logging
+      clusterRoles:
+      - view
+
+- name: standard-user-viewer
+  id:
+  - 987654
+  groups:
+  - crtadmin-users-view
+  - kubesaw-team
+  host:
+    roleBindings:
+    - namespace: ${HOST_NS}
+      clusterRoles:
+      - view
+  member:
+    roleBindings:
+    - namespace: ${MEMBER_NS}
+      clusterRoles:
+      - view
+
+- name: other-component-admin
+  id:
+  - 561234287
+  - f:528d:some-admin
+  member:
+    roleBindings:
+    - namespace: some-component
+      clusterRoles:
+      - edit
+      - approve-operator-update # needs to be created separately
+    clusterRoleBindings:
+      clusterRoles:
+      - list-operators-group # needs to be created separately
+
+- name: other-component-viewer
+  id:
+  - 5412345
+  member:
+    roleBindings:
+    - namespace: first-component
+      clusterRoles:
+      - view
+    - namespace: second-component
+      clusterRoles:
+      - view
+
+- name: user-in-all-clusters
+  id:
+  - 1234567890
+  allClusters: true

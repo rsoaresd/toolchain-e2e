@@ -39,6 +39,11 @@ else
 endif
 	@$(MAKE) install-ksctl KSCTL_REPO_PATH=${KSCTL_REPO_PATH} REMOTE_KSCTL_BRANCH=${REMOTE_KSCTL_BRANCH}
 
+
+# generate ksctl.yaml file (needed to run user-management related ksctl commands)
+generate-ksctl-file:
+	scripts/ksctl/generate-ksctl-file.sh -hn toolchain-host-operator -mn toolchain-member-operator
+
 clone-ksctl-and-pair:
 ifneq ($(strip $(REMOTE_KSCTL_BRANCH)),)
 	@echo "Branch ref of the user's fork to be used for pairing: \"${REMOTE_KSCTL_BRANCH}\""
