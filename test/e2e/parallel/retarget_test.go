@@ -185,7 +185,8 @@ func TestRetargetUserWithSBRByChangingSpaceTargetClusterWhenSpaceIsShared(t *tes
 	// the users added via SBR will lose access to the Space, since SBRs where persisted on the namespace on member1 which was deleting while retargeting
 	_, err = member2Await.WaitForNSTmplSet(t, spaceToMove.Name,
 		wait.UntilNSTemplateSetHasSpaceRoles(
-			wait.SpaceRole(tier.Spec.SpaceRoles["admin"].TemplateRef, ownerMur.Name)))
+			wait.SpaceRole(tier.Spec.SpaceRoles["admin"].TemplateRef, ownerMur.Name)),
+		wait.UntilNSTemplateSetHasConditions(wait.Provisioned()))
 	require.NoError(t, err)
 	VerifyResourcesProvisionedForSpace(t, awaitilities, spaceToMove.Name, wait.UntilSpaceHasStatusTargetCluster(member2Await.ClusterName))
 	VerifyUserRelatedResources(t, awaitilities, user.UserSignup, ownerMur.Spec.TierName, ExpectUserAccountIn(member2Await))
